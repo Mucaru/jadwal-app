@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
 import type { Task } from "@/lib/db";
+import { X } from "lucide-react";
 
 export default function TaskCard({ task }: { task: Task }) {
   const [expanded, setExpanded] = useState(false);
@@ -46,9 +47,9 @@ export default function TaskCard({ task }: { task: Task }) {
           </p>
           <p className="text-xs text-gray-400 mt-1">Deadline {task.dueDate}</p>
         </div>
-        <button onClick={() => deleteTask(task.id)} className="text-gray-300 text-lg px-2">
-          ✕
-        </button>
+      <button onClick={() => deleteTask(task.id)} className="text-gray-300 px-2" aria-label="Hapus task">
+        <X size={18} />
+      </button>
       </div>
 
       {mySubtasks.length > 0 && (
