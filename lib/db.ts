@@ -7,6 +7,7 @@ interface Jadwal {
   endTime: string;
   date: string; // format "YYYY-MM-DD"
   category: string;
+  recurringId?: string; // opsional, buat nandain grup jadwal berulang
 }
 
 interface Task {

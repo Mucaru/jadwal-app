@@ -25,9 +25,10 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
   const [endTime, setEndTime] = useState("10:00");
   const [dueDate, setDueDate] = useState(defaultDate);
   const [category, setCategory] = useState("kerja");
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
-  const { addJadwal, addTask } = useAppStore();
-
+  const { addJadwal, addTask, addRecurringJadwal } = useAppStore();
   if (!open) return null;
 
   const reset = () => {
@@ -36,19 +37,29 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
     setEndTime("10:00");
     setDueDate(defaultDate);
     setCategory("kerja");
+    setIsRecurring(false);
+    setSelectedDays([]);
   };
 
   const handleSubmit = async () => {
     if (!title.trim()) return;
-
     if (tab === "jadwal") {
-      await addJadwal({
-        title,
-        startTime,
-        endTime,
-        date: defaultDate,
-        category,
-      });
+      if (isRecurring && selectedDays.length > 0) {
+        await addRecurringJadwal(
+          { title, startTime, endTime, category },
+          defaultDate,
+          selectedDays,
+          8, // generate 8 minggu ke depan
+        );
+      } else {
+        await addJadwal({
+          title,
+          startTime,
+          endTime,
+          date: defaultDate,
+          category,
+        });
+      }
     } else {
       await addTask({
         title,
@@ -81,7 +92,9 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
           <button
             onClick={() => setTab("jadwal")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-              tab === "jadwal" ? "bg-white shadow text-indigo-600" : "text-gray-500"
+              tab === "jadwal"
+                ? "bg-white shadow text-indigo-600"
+                : "text-gray-500"
             }`}
           >
             Jadwal
@@ -89,7 +102,9 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
           <button
             onClick={() => setTab("task")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-              tab === "task" ? "bg-white shadow text-indigo-600" : "text-gray-500"
+              tab === "task"
+                ? "bg-white shadow text-indigo-600"
+                : "text-gray-500"
             }`}
           >
             Task
@@ -153,6 +168,46 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
               onChange={(e) => setDueDate(e.target.value)}
               className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm"
             />
+          </div>
+        )}
+
+        {tab === "jadwal" && (
+          <div className="mb-4">
+            <label className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+              <input
+                type="checkbox"
+                checked={isRecurring}
+                onChange={(e) => setIsRecurring(e.target.checked)}
+              />
+              Ulangi tiap minggu
+            </label>
+
+            {isRecurring && (
+              <div className="flex flex-wrap gap-2">
+                {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map(
+                  (label, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() =>
+                        setSelectedDays((prev) =>
+                          prev.includes(idx)
+                            ? prev.filter((d) => d !== idx)
+                            : [...prev, idx],
+                        )
+                      }
+                      className={`w-9 h-9 rounded-full text-xs font-medium border ${
+                        selectedDays.includes(idx)
+                          ? "bg-indigo-500 text-white border-indigo-500"
+                          : "bg-white text-gray-600 border-gray-200"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ),
+                )}
+              </div>
+            )}
           </div>
         )}
 

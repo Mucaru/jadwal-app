@@ -8,8 +8,13 @@ interface AppState {
 
   loadJadwal: (date: string) => Promise<void>;
   addJadwal: (item: Omit<Jadwal, "id">) => Promise<void>;
+  addRecurringJadwal: (
+  base: Omit<Jadwal, "id" | "date" | "recurringId">,
+  startDate: string,
+  weekdays: number[],
+  weeksAhead: number
+) => Promise<void>;
   deleteJadwal: (id: number) => Promise<void>;
-
   loadTasks: () => Promise<void>;
   addTask: (item: Omit<Task, "id">) => Promise<void>;
   toggleTaskDone: (id: number) => Promise<void>;
@@ -26,12 +31,39 @@ export const useAppStore = create<AppState>((set, get) => ({
   subtaskList: [],
 
   loadJadwal: async (date) => {
-    const items = await db.jadwal.where("date").equals(date).sortBy("startTime");
+    const items = await db.jadwal
+      .where("date")
+      .equals(date)
+      .sortBy("startTime");
     set({ jadwalList: items });
   },
   addJadwal: async (item) => {
     await db.jadwal.add(item as Jadwal);
     await get().loadJadwal(item.date);
+  },
+  addRecurringJadwal: async (
+    base: Omit<Jadwal, "id" | "date" | "recurringId">,
+    startDate: string,
+    weekdays: number[], // 0=Minggu, 1=Senin, ... 6=Sabtu
+    weeksAhead: number,
+  ) => {
+    const recurringId = crypto.randomUUID();
+    const start = new Date(startDate + "T00:00:00");
+    const entries: Omit<Jadwal, "id">[] = [];
+
+    for (let i = 0; i < weeksAhead * 7; i++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i);
+      if (weekdays.includes(d.getDay())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        entries.push({ ...base, date: `${y}-${m}-${day}`, recurringId });
+      }
+    }
+
+    await db.jadwal.bulkAdd(entries as Jadwal[]);
+    await get().loadJadwal(startDate);
   },
   deleteJadwal: async (id) => {
     const item = await db.jadwal.get(id);
