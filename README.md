@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jadwal Ku
 
-## Getting Started
+Aplikasi jadwal dan task harian offline-first, dibuat buat ngerapihin kegiatan harian yang campur antara jadwal tetap dan deadline project.
 
-First, run the development server:
+**Live demo:** https://jadwal-app-pi.vercel.app/
+
+## Fitur
+
+- **Jadwal** — kegiatan dengan waktu mulai & selesai tetap (fixed-time)
+- **Task** — pekerjaan dengan deadline, dilengkapi checklist subtask dan progress bar
+- **Offline-first** — semua data tersimpan lokal di device (IndexedDB), tetap jalan tanpa internet
+- **Installable (PWA)** — bisa di-"Add to Home Screen" dari HP, jalan fullscreen kayak app native
+- **Navigasi 5 hari** — geser antar tanggal lewat strip kalender mini
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (App Router) + TypeScript
+- [Tailwind CSS](https://tailwindcss.com/) — styling
+- [Dexie.js](https://dexie.org/) — wrapper IndexedDB buat database offline
+- [Zustand](https://github.com/pmndrs/zustand) — state management
+- [@ducanh2912/next-pwa](https://github.com/DuCanhGH/next-pwa) — service worker & PWA config
+- [Vercel](https://vercel.com/) — hosting & deployment
+
+## Struktur Data
+
+- `Jadwal` — title, startTime, endTime, date, category
+- `Task` — title, dueDate, completed, category
+- `Subtask` — title, done, taskId (relasi ke Task)
+
+Task selesai ditandai manual (tidak otomatis dari subtask); subtask hanya mempengaruhi progress bar.
+
+## Menjalankan secara lokal
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`. Untuk test mode PWA (service worker aktif), build production dulu:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Instalasi di HP
 
-## Learn More
+1. Buka link live demo di Chrome (Android) atau Safari (iOS)
+2. Tap menu (⋮) → **Add to Home Screen** / **Install App**
+3. Buka dari home screen — app akan jalan fullscreen tanpa address bar
 
-To learn more about Next.js, take a look at the following resources:
+## Roadmap (v1.1+)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Reminder/notifikasi
+- Recurring schedule (jadwal berulang)
+- Kategori dengan color-coding
+- Swipe gesture untuk selesai/hapus
+- Dark mode
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
