@@ -27,6 +27,7 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
   const [category, setCategory] = useState("kerja");
   const [isRecurring, setIsRecurring] = useState(false);
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
+  const [weeksAhead, setWeeksAhead] = useState(8);
 
   const { addJadwal, addTask, addRecurringJadwal } = useAppStore();
   if (!open) return null;
@@ -39,6 +40,7 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
     setCategory("kerja");
     setIsRecurring(false);
     setSelectedDays([]);
+    setWeeksAhead(8);
   };
 
   const handleSubmit = async () => {
@@ -49,7 +51,7 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
           { title, startTime, endTime, category },
           defaultDate,
           selectedDays,
-          8, // generate 8 minggu ke depan
+          weeksAhead,
         );
       } else {
         await addJadwal({
@@ -183,29 +185,51 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
             </label>
 
             {isRecurring && (
-              <div className="flex flex-wrap gap-2">
-                {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map(
-                  (label, idx) => (
+              <div>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map(
+                    (label, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() =>
+                          setSelectedDays((prev) =>
+                            prev.includes(idx)
+                              ? prev.filter((d) => d !== idx)
+                              : [...prev, idx],
+                          )
+                        }
+                        className={`w-9 h-9 rounded-full text-xs font-medium border ${
+                          selectedDays.includes(idx)
+                            ? "bg-indigo-500 text-white border-indigo-500"
+                            : "bg-white text-gray-600 border-gray-200"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <label className="text-xs text-gray-500">
+                  Selama berapa minggu?
+                </label>
+                <div className="flex gap-2 mt-1.5">
+                  {[4, 8, 12].map((w) => (
                     <button
-                      key={idx}
+                      key={w}
                       type="button"
-                      onClick={() =>
-                        setSelectedDays((prev) =>
-                          prev.includes(idx)
-                            ? prev.filter((d) => d !== idx)
-                            : [...prev, idx],
-                        )
-                      }
-                      className={`w-9 h-9 rounded-full text-xs font-medium border ${
-                        selectedDays.includes(idx)
+                      onClick={() => setWeeksAhead(w)}
+                      className={`px-4 py-1.5 rounded-full text-xs font-medium border ${
+                        weeksAhead === w
                           ? "bg-indigo-500 text-white border-indigo-500"
                           : "bg-white text-gray-600 border-gray-200"
                       }`}
                     >
-                      {label}
+                      {w} minggu
                     </button>
-                  ),
-                )}
+                  ))}
+                </div>
               </div>
             )}
           </div>
