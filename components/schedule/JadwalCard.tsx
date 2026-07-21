@@ -93,7 +93,11 @@ export default function JadwalCard({ jadwal, onDelete }: Props) {
           </div>
           <div className="w-px self-stretch bg-gray-200" />
           <div className="flex-1 flex items-center gap-2">
-            <Icon size={16} className="text-indigo-400 flex-shrink-0" />
+            <Icon
+              size={16}
+              className="text-[var(--color-primary)] flex-shrink-0"
+              style={{ opacity: 0.7 }}
+            />
             <div>
               <div className="flex items-center gap-1.5">
                 <p className="text-sm font-medium">{jadwal.title}</p>

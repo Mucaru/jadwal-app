@@ -41,7 +41,7 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
             onClick={() => setTab("jadwal")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium ${
               tab === "jadwal"
-                ? "bg-white shadow text-indigo-600"
+                ? "bg-white shadow text-[var(--color-primary)]"
                 : "text-gray-500"
             }`}
           >
@@ -51,7 +51,7 @@ export default function AddSheet({ open, onClose, defaultDate }: Props) {
             onClick={() => setTab("task")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium ${
               tab === "task"
-                ? "bg-white shadow text-indigo-600"
+                ? "bg-white shadow text-[var(--color-primary)]"
                 : "text-gray-500"
             }`}
           >

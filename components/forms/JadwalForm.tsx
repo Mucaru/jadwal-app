@@ -62,7 +62,7 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
               onClick={() => setCategory(c.value)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
                 category === c.value
-                  ? "bg-indigo-500 text-white border-indigo-500"
+                  ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
                   : "bg-white text-gray-600 border-gray-200"
               }`}
             >
@@ -119,7 +119,7 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
                   }
                   className={`w-9 h-9 rounded-full text-xs font-medium border ${
                     selectedDays.includes(idx)
-                      ? "bg-indigo-500 text-white border-indigo-500"
+                      ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
                       : "bg-white text-gray-600 border-gray-200"
                   }`}
                 >
@@ -139,7 +139,7 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
                   onClick={() => setWeeksAhead(w)}
                   className={`px-4 py-1.5 rounded-full text-xs font-medium border ${
                     weeksAhead === w
-                      ? "bg-indigo-500 text-white border-indigo-500"
+                      ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
                       : "bg-white text-gray-600 border-gray-200"
                   }`}
                 >
@@ -153,7 +153,7 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-indigo-500 text-white rounded-xl py-3 text-sm font-medium active:scale-[0.98] transition-transform"
+        className="w-full bg-[var(--color-primary)] text-white rounded-xl py-3 text-sm font-medium active:scale-[0.98] transition-transform"
       >
         Simpan
       </button>
