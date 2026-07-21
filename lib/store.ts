@@ -9,11 +9,12 @@ interface AppState {
   loadJadwal: (date: string) => Promise<void>;
   addJadwal: (item: Omit<Jadwal, "id">) => Promise<void>;
   addRecurringJadwal: (
-  base: Omit<Jadwal, "id" | "date" | "recurringId">,
-  startDate: string,
-  weekdays: number[],
-  weeksAhead: number
-) => Promise<void>;
+    base: Omit<Jadwal, "id" | "date" | "recurringId">,
+    startDate: string,
+    weekdays: number[],
+    weeksAhead: number,
+  ) => Promise<void>;
+  deleteJadwal: (id: number) => Promise<void>;
   deleteJadwalSeries: (recurringId: string, fromDate: string) => Promise<void>;
   loadTasks: () => Promise<void>;
   addTask: (item: Omit<Task, "id">) => Promise<void>;
@@ -65,16 +66,21 @@ export const useAppStore = create<AppState>((set, get) => ({
     await db.jadwal.bulkAdd(entries as Jadwal[]);
     await get().loadJadwal(startDate);
   },
+  deleteJadwal: async (id) => {
+    const item = await db.jadwal.get(id);
+    await db.jadwal.delete(id);
+    if (item) await get().loadJadwal(item.date);
+  },
 
   deleteJadwalSeries: async (recurringId: string, fromDate: string) => {
-  const currentDate = get().jadwalList[0]?.date ?? fromDate;
-  await db.jadwal
-    .where("recurringId")
-    .equals(recurringId)
-    .and((j) => j.date >= fromDate)
-    .delete();
-  await get().loadJadwal(currentDate);
-},
+    const currentDate = get().jadwalList[0]?.date ?? fromDate;
+    await db.jadwal
+      .where("recurringId")
+      .equals(recurringId)
+      .and((j) => j.date >= fromDate)
+      .delete();
+    await get().loadJadwal(currentDate);
+  },
 
   loadTasks: async () => {
     const items = await db.task.orderBy("dueDate").toArray();
