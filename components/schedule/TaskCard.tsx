@@ -44,8 +44,9 @@ export default function TaskCard({ task }: { task: Task }) {
     </button>
   );
 
-  return (
-    <SwipeToDelete actions={actions}>
+return (
+  <div className="animate-card-in">
+  <SwipeToDelete actions={actions}>
       <div className="bg-white p-3.5 shadow-card rounded-2xl">
         <div className="flex items-center gap-3">
           <button
@@ -120,5 +121,6 @@ export default function TaskCard({ task }: { task: Task }) {
         )}
       </div>
     </SwipeToDelete>
+    </div>
   );
 }

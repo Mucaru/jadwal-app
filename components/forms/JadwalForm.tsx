@@ -28,10 +28,16 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
         { title, startTime, endTime, category },
         defaultDate,
         selectedDays,
-        weeksAhead
+        weeksAhead,
       );
     } else {
-      await addJadwal({ title, startTime, endTime, date: defaultDate, category });
+      await addJadwal({
+        title,
+        startTime,
+        endTime,
+        date: defaultDate,
+        category,
+      });
     }
     onDone();
   };
@@ -106,7 +112,9 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
                   type="button"
                   onClick={() =>
                     setSelectedDays((prev) =>
-                      prev.includes(idx) ? prev.filter((d) => d !== idx) : [...prev, idx]
+                      prev.includes(idx)
+                        ? prev.filter((d) => d !== idx)
+                        : [...prev, idx],
                     )
                   }
                   className={`w-9 h-9 rounded-full text-xs font-medium border ${
@@ -120,7 +128,9 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
               ))}
             </div>
 
-            <label className="text-xs text-gray-500">Selama berapa minggu?</label>
+            <label className="text-xs text-gray-500">
+              Selama berapa minggu?
+            </label>
             <div className="flex gap-2 mt-1.5">
               {[4, 8, 12].map((w) => (
                 <button
@@ -143,7 +153,7 @@ export default function JadwalForm({ defaultDate, onDone }: Props) {
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-indigo-500 text-white rounded-xl py-3 text-sm font-medium"
+        className="w-full bg-indigo-500 text-white rounded-xl py-3 text-sm font-medium active:scale-[0.98] transition-transform"
       >
         Simpan
       </button>

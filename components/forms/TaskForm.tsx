@@ -64,7 +64,7 @@ export default function TaskForm({ defaultDate, onDone }: Props) {
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-indigo-500 text-white rounded-xl py-3 text-sm font-medium"
+        className="w-full bg-indigo-500 text-white rounded-xl py-3 text-sm font-medium active:scale-[0.98] transition-transform"
       >
         Simpan
       </button>
