@@ -3,11 +3,12 @@ import Dexie, { type EntityTable } from "dexie";
 interface Jadwal {
   id: number;
   title: string;
-  startTime: string; // format "HH:mm"
+  startTime: string;
   endTime: string;
-  date: string; // format "YYYY-MM-DD"
+  date: string;
   category: string;
-  recurringId?: string; // opsional, buat nandain grup jadwal berulang
+  recurringId?: string;
+  reminderMinutesBefore?: number; // baru
 }
 
 interface Task {
@@ -38,6 +39,12 @@ db.version(1).stores({
 });
 
 db.version(2).stores({
+  jadwal: "++id, date, startTime, category, recurringId",
+  task: "++id, dueDate, completed, category",
+  subtask: "++id, taskId, done",
+});
+
+db.version(3).stores({
   jadwal: "++id, date, startTime, category, recurringId",
   task: "++id, dueDate, completed, category",
   subtask: "++id, taskId, done",

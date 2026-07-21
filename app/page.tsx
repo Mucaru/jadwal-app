@@ -1,7 +1,6 @@
 "use client";
 
 import { useSchedule } from "@/hooks/useSchedule";
-import { useEffect } from "react";
 import Header from "@/components/layout/Header";
 import DateStrip from "@/components/schedule/DateStrip";
 import JadwalCard from "@/components/schedule/JadwalCard";
@@ -10,10 +9,6 @@ import AddSheet from "@/components/AddSheet";
 import { Plus } from "lucide-react";
 
 export default function Home() {
-  useEffect(() => {
-  const supported = 'showTrigger' in Notification.prototype;
-  alert("Notification Trigger supported: " + supported);
-}, []);
   const {
     selectedDate,
     setSelectedDate,
