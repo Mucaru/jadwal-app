@@ -67,7 +67,7 @@ export default function Home() {
 
         <button
           onClick={() => setSheetOpen(true)}
-          className="fixed bottom-4 right-4 w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+          className="fixed bottom-4 right-4 w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform"
           aria-label="Tambah baru"
         >
           <Plus size={26} />

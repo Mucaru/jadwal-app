@@ -14,7 +14,7 @@ export default function Header({
   taskCount,
 }: Props) {
   return (
-    <div className="bg-indigo-500 text-white px-5 pt-6 pb-9 rounded-b-[32px]">
+    <div className="bg-[var(--color-primary)] text-white px-5 pt-6 pb-9 rounded-b-[32px]">
       <div className="flex justify-between items-start">
         <div>
           <p className="text-sm opacity-80">{dateLabel}</p>

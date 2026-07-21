@@ -18,7 +18,7 @@ export default function DateStrip({ dates, selectedDateKey, onSelect }: Props) {
             key={d.toISOString()}
             onClick={() => onSelect(d)}
             className={`flex-1 text-center py-2 rounded-xl transition-colors ${
-              isActive ? "bg-indigo-500 text-white" : "bg-gray-50 text-gray-700"
+              isActive ? "bg-[var(--color-primary)] text-white" : "bg-gray-50 text-gray-700"
             }`}
           >
             <p className={`text-xs ${isActive ? "opacity-85" : "text-gray-400"}`}>
