@@ -21,7 +21,6 @@ export async function scheduleReminder(
   if (!registration) return false;
 
   if (isTriggerSupported()) {
-    // @ts-expect-error - TimestampTrigger belum ada di lib TS bawaan
     await registration.showNotification(title, {
       tag: id,
       body,
