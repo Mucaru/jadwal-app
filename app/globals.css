@@ -1,80 +1,408 @@
 @import "tailwindcss";
 
-:root {
-  --color-primary: #6366f1;
-  --color-primary-light: #818cf8;
-  --color-primary-dark: #4f46e5;
-}
+/* =========================================================
+   1. TAILWIND THEME MAPPING
+   Membuat semantic token tersedia sebagai utility Tailwind.
 
-[data-theme="pink"] {
-  --color-primary: #ec4899;
-  --color-primary-light: #f472b6;
-  --color-primary-dark: #db2777;
-}
+   Contoh:
+   bg-primary
+   text-text-primary
+   bg-surface
+   shadow-card
+   rounded-card
+   font-display
+   ========================================================= */
 
-@theme {
+@theme inline {
+  /* Typography */
   --font-sans: var(--font-inter);
   --font-display: var(--font-manrope);
+
+  /* Application colors */
+  --color-background: var(--app-background);
+  --color-background-secondary: var(--app-background-secondary);
+
+  /* Surfaces */
+  --color-surface: var(--surface-solid);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-glass: var(--surface-glass);
+  --color-surface-glass-strong: var(--surface-glass-strong);
+
+  /* Text */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-accent: var(--text-on-accent);
+
+  /* Brand */
+  --color-primary: var(--accent);
+  --color-primary-light: var(--accent-light);
+  --color-primary-dark: var(--accent-dark);
+  --color-primary-soft: var(--accent-soft);
+
+  /* Status */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  /* Shadows */
+  --shadow-card: var(--ui-shadow-card);
+  --shadow-floating: var(--ui-shadow-floating);
+  --shadow-sheet: var(--ui-shadow-sheet);
+
+  /* Radius */
+  --radius-card: 1.25rem;
+  --radius-panel: 1.75rem;
+  --radius-pill: 999px;
+}
+
+/* =========================================================
+   2. DEFAULT THEME — INDIGO
+   Semua komponen nantinya mengambil warna dari token ini.
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* Layout */
+  --app-shell-max-width: 430px;
+
+  /* Application background */
+  --app-background: #f7f8fc;
+  --app-background-secondary: #eceff6;
+
+  --app-gradient:
+    radial-gradient(circle at 15% 0%, rgb(129 140 248 / 0.14), transparent 34%),
+    radial-gradient(
+      circle at 100% 30%,
+      rgb(196 181 253 / 0.12),
+      transparent 30%
+    ),
+    linear-gradient(180deg, #fafbff 0%, #f5f6fb 48%, #f7f8fc 100%);
+
+  /* Decorative colors for future background blobs */
+  --blob-primary: rgb(99 102 241 / 0.28);
+  --blob-secondary: rgb(168 85 247 / 0.16);
+  --blob-tertiary: rgb(56 189 248 / 0.12);
+
+  /* Surfaces */
+  --surface-glass: rgb(255 255 255 / 0.58);
+  --surface-glass-strong: rgb(255 255 255 / 0.78);
+  --surface-solid: #ffffff;
+  --surface-elevated: rgb(255 255 255 / 0.92);
+
+  /* Borders */
+  --border-glass: rgb(255 255 255 / 0.72);
+  --border-subtle: rgb(15 23 42 / 0.08);
+
+  /* Text */
+  --text-primary: #182033;
+  --text-secondary: #536079;
+  --text-muted: #8a94a8;
+  --text-on-accent: #ffffff;
+
+  /* Accent */
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-dark: #4f46e5;
+  --accent-rgb: 99 102 241;
+  --accent-soft: rgb(var(--accent-rgb) / 0.12);
+
+  /* Focus */
+  --border-focus: rgb(var(--accent-rgb) / 0.46);
+
+  /* Status */
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+
+  /* Shadows */
+  --ui-shadow-card:
+    0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px rgb(15 23 42 / 0.06),
+    0 16px 40px rgb(var(--accent-rgb) / 0.06);
+
+  --ui-shadow-floating:
+    0 8px 20px rgb(15 23 42 / 0.12), 0 16px 36px rgb(var(--accent-rgb) / 0.22);
+
+  --ui-shadow-sheet:
+    0 -8px 30px rgb(15 23 42 / 0.08), 0 -18px 60px rgb(var(--accent-rgb) / 0.08);
+
+  /* Blur */
+  --ui-blur-sm: 8px;
+  --ui-blur-md: 16px;
+  --ui-blur-lg: 24px;
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-normal: 220ms;
+  --motion-slow: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /*
+   * Compatibility aliases.
+   * Dipertahankan karena komponen lama masih menggunakan:
+   * var(--color-primary)
+   */
+  --background: var(--app-background);
+  --foreground: var(--text-primary);
+  --color-primary: var(--accent);
+  --color-primary-light: var(--accent-light);
+  --color-primary-dark: var(--accent-dark);
+}
+
+/* =========================================================
+   3. PINK THEME
+   Hanya nilai brand dan background yang berubah.
+   Surface, typography, dan status tetap konsisten.
+   ========================================================= */
+
+[data-theme="pink"] {
+  --accent: #ec4899;
+  --accent-light: #f472b6;
+  --accent-dark: #db2777;
+  --accent-rgb: 236 72 153;
+
+  --app-background: #fff7fb;
+  --app-background-secondary: #f8eaf2;
+
+  --app-gradient:
+    radial-gradient(circle at 15% 0%, rgb(244 114 182 / 0.16), transparent 34%),
+    radial-gradient(
+      circle at 100% 30%,
+      rgb(251 207 232 / 0.2),
+      transparent 30%
+    ),
+    linear-gradient(180deg, #fffafd 0%, #fff5fa 48%, #faf7f9 100%);
+
+  --blob-primary: rgb(236 72 153 / 0.28);
+  --blob-secondary: rgb(244 114 182 / 0.18);
+  --blob-tertiary: rgb(192 132 252 / 0.12);
+}
+
+/* =========================================================
+   4. BASE STYLES
+   Reset dan perilaku dasar aplikasi.
+   ========================================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-height: 100%;
+    background: var(--app-background-secondary);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    overflow-x: hidden;
+
+    background: var(--app-gradient);
+    color: var(--text-primary);
+
+    font-family:
+      var(--font-inter),
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    color: inherit;
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  img,
+  svg {
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* =========================================================
+   5. GLASS PRIMITIVES
+   Belum wajib dipakai sekarang.
+   Akan digunakan saat mengubah komponen satu per satu.
+   ========================================================= */
+
+@layer utilities {
+  .glass-surface {
+    background: var(--surface-glass);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--ui-shadow-card);
+    background-clip: padding-box;
+
+    -webkit-backdrop-filter: blur(var(--ui-blur-md)) saturate(150%);
+    backdrop-filter: blur(var(--ui-blur-md)) saturate(150%);
+  }
+
+  .glass-surface-strong {
+    background: var(--surface-glass-strong);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--ui-shadow-card);
+    background-clip: padding-box;
+
+    -webkit-backdrop-filter: blur(var(--ui-blur-lg)) saturate(160%);
+    backdrop-filter: blur(var(--ui-blur-lg)) saturate(160%);
+  }
+
+  .glass-sheet {
+    background: var(--surface-elevated);
+    border-top: 1px solid var(--border-glass);
+    box-shadow: var(--ui-shadow-sheet);
+
+    -webkit-backdrop-filter: blur(var(--ui-blur-lg)) saturate(160%);
+    backdrop-filter: blur(var(--ui-blur-lg)) saturate(160%);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tabular-numbers {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* =========================================================
+   6. ANIMATIONS
+   Mempertahankan nama class dari versi sebelumnya.
+   ========================================================= */
+
+@keyframes sheet-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @layer utilities {
-  .shadow-card {
-    box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.04),
-      0 4px 12px rgba(0, 0, 0, 0.05),
-      0 8px 24px rgba(99, 102, 241, 0.04);
-  }
-
-  @keyframes sheet-slide-up {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
   .animate-sheet-in {
-    animation: sheet-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-  }
-
-  @keyframes fade-slide-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    animation: sheet-slide-up var(--motion-slow) var(--ease-sheet) both;
   }
 
   .animate-card-in {
-    animation: fade-slide-in 0.3s ease-out backwards;
+    animation: fade-slide-in var(--motion-slow) var(--ease-standard) both;
   }
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* =========================================================
+   7. FALLBACKS AND ACCESSIBILITY
+   ========================================================= */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Browser lama yang tidak mendukung backdrop-filter
+ * tetap memperoleh surface solid dan dapat dibaca.
+ */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-surface,
+  .glass-surface-strong,
+  .glass-sheet {
+    background: var(--surface-solid);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Sistem yang meminta pengurangan transparansi.
+ * Browser yang belum mendukung media query ini akan
+ * mengabaikannya tanpa merusak tampilan.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-surface,
+  .glass-surface-strong,
+  .glass-sheet {
+    background: var(--surface-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/*
+ * Mengurangi animasi non-esensial sesuai preferensi perangkat.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }
