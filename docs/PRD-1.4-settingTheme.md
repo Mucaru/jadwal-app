@@ -1,7 +1,7 @@
-# PRD — Jadwal Ku v1.5: Swipe Delete & Theme Picker
+# PRD — Jadwal Ku v1.4: Swipe Delete & Theme Picker
 
 **Status:** Planned (belum dikerjakan)
-**Versi:** 1.5
+**Versi:** 1.4
 **Produk:** Jadwal Ku (offline PWA jadwal & task harian)
 **Live:** https://jadwal-app-pi.vercel.app/
 **Dependensi:** v1.3 (Recurring Delete Series)
@@ -25,9 +25,9 @@ Menyediakan pilihan warna tema (indigo / pink) yang bisa diganti user kapan saja
 
 ## 3. Non-Tujuan
 
-- Tidak membuat sistem tema custom bebas (color picker penuh) — hanya 2 pilihan preset di v1.5
+- Tidak membuat sistem tema custom bebas (color picker penuh) — hanya 2 pilihan preset di v1.4
 - Tidak mengubah logika hapus grup recurring dari v1.3 (delete series tetap ada, hanya cara memicunya yang disederhanakan)
-- Dark mode **tidak** termasuk di v1.5 — tetap terpisah sebagai item roadmap sendiri
+- Dark mode **tidak** termasuk di v1.4 — tetap terpisah sebagai item roadmap sendiri
 
 ## 4. Spesifikasi Fungsional
 
@@ -57,6 +57,20 @@ Menyediakan pilihan warna tema (indigo / pink) yang bisa diganti user kapan saja
 
 **Penyimpanan:** Preferensi tema disimpan di device (localStorage cukup untuk ini, karena bukan data inti yang perlu di-backup lewat Dexie) dan diterapkan ulang otomatis saat app dibuka kembali.
 
+### 4.3 Premium UI Polish
+
+Peningkatan visual tambahan di luar 2 fitur inti di atas, masih dalam semangat "iOS-style" yang jadi arahan desain sejak v1.1, supaya tampilan makin terasa matang dan bukan sekadar fungsional.
+
+**Rincian:**
+- **Depth & elevation** — shadow pada card dibuat lebih halus dan berlapis (bukan shadow flat 1 warna), memberi kesan card "mengambang" tipis di atas background, konsisten dengan gaya Card iOS
+- **Micro-interaction** — transisi halus (scale/opacity) saat tap tombol, card masuk (fade+slide) saat pertama muncul di list, bukan muncul instan
+- **Empty state yang lebih hidup** — saat "Belum ada jadwal/task", tampilkan ilustrasi kecil (SVG sederhana, bukan foto) alih-alih teks abu-abu polos, supaya state kosong tidak terasa seperti error
+- **Spacing & rhythm** — audit ulang jarak antar elemen (padding card, gap antar section) agar lebih konsisten mengikuti skala tetap (4/8/12/16/24px), bukan nilai acak
+- **Header refinement** — efek blur/glass tipis di balik panel gradient (mendekati referensi Dynamic Island dari riset awal v1.1), bukan warna solid polos
+- **Bottom sheet polish** — animasi slide-up yang lebih smooth (easing custom, bukan default), drag handle kecil di atas sheet (indikator visual bisa di-swipe-down untuk nutup)
+
+**Non-tujuan bagian ini:** tidak mengubah struktur informasi atau alur interaksi yang sudah ada — murni penghalusan visual di atas struktur yang sudah berjalan di v1.1-v1.3.
+
 ## 5. Kriteria Sukses (Acceptance Criteria)
 
 - [ ] Swipe kiri pada Jadwal/Task memunculkan aksi hapus, tanpa harus tap ✕ dulu
@@ -65,6 +79,10 @@ Menyediakan pilihan warna tema (indigo / pink) yang bisa diganti user kapan saja
 - [ ] Tombol ✕ manual tetap berfungsi sebagai alternatif
 - [ ] User bisa pilih tema pink dari menu, dan seluruh elemen ber-aksen warna berubah konsisten
 - [ ] Pilihan tema tetap tersimpan setelah app ditutup dan dibuka lagi
+- [ ] Card memiliki shadow berlapis yang halus, bukan shadow datar
+- [ ] Ada transisi masuk untuk card list dan feedback tap pada tombol utama
+- [ ] Empty state Jadwal/Task menampilkan ilustrasi kecil, bukan teks polos
+- [ ] Bottom sheet punya drag handle dan animasi slide-up yang halus
 
 ## 6. Perubahan Teknis (Perkiraan Awal)
 
@@ -76,6 +94,9 @@ Menyediakan pilihan warna tema (indigo / pink) yang bisa diganti user kapan saja
 | `app/globals.css` | Ubah warna hardcoded jadi CSS variable (`--color-primary`, dst) supaya bisa di-switch dinamis |
 | Komponen ber-warna indigo (`Header`, `DateStrip`, `AddSheet`, dll) | Ganti class Tailwind hardcoded (`bg-indigo-500`) jadi referensi CSS variable |
 | `components/settings/ThemeToggle.tsx` (baru) | UI pemilihan tema |
+| `components/ui/EmptyState.tsx` (baru) | Komponen ilustrasi kecil untuk state kosong |
+| `components/AddSheet.tsx` | Tambah drag handle, refine animasi slide-up |
+| Semua komponen card (`JadwalCard`, `TaskCard`) | Update shadow, tambah transisi masuk (CSS transition/Framer Motion) |
 
 ## 7. Risiko
 
