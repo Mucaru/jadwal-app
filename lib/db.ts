@@ -37,5 +37,11 @@ db.version(1).stores({
   subtask: "++id, taskId, done",
 });
 
+db.version(2).stores({
+  jadwal: "++id, date, startTime, category, recurringId",
+  task: "++id, dueDate, completed, category",
+  subtask: "++id, taskId, done",
+});
+
 export type { Jadwal, Task, Subtask };
 export { db };
