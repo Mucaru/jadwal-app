@@ -20,23 +20,38 @@ interface Props {
   onDelete: (id: number) => void;
 }
 
-const categoryIcons: Record<string, typeof CircleDot> = {
-  kerja: Video,
-  olahraga: Dumbbell,
-  coding: Code2,
-  personal: Coffee,
-  belajar: BookOpen,
-};
+function CategoryIcon({ category }: { category: string }) {
+  const iconProps = {
+    size: 16,
+    className: "text-[var(--color-primary)] flex-shrink-0",
+    style: { opacity: 0.7 },
+    "aria-hidden": true as const,
+  };
 
-function getCategoryIcon(category: string) {
-  const key = category.toLowerCase();
-  return categoryIcons[key] ?? CircleDot;
+  switch (category.toLowerCase()) {
+    case "kerja":
+      return <Video {...iconProps} />;
+
+    case "olahraga":
+      return <Dumbbell {...iconProps} />;
+
+    case "coding":
+      return <Code2 {...iconProps} />;
+
+    case "personal":
+      return <Coffee {...iconProps} />;
+
+    case "belajar":
+      return <BookOpen {...iconProps} />;
+
+    default:
+      return <CircleDot {...iconProps} />;
+  }
 }
 
 export default function JadwalCard({ jadwal, onDelete }: Props) {
   const [confirmSeries, setConfirmSeries] = useState(false);
   const { deleteJadwalSeries } = useAppStore();
-  const Icon = getCategoryIcon(jadwal.category);
 
   const handleDeleteSeries = async () => {
     if (jadwal.recurringId) {
@@ -93,11 +108,7 @@ export default function JadwalCard({ jadwal, onDelete }: Props) {
           </div>
           <div className="w-px self-stretch bg-gray-200" />
           <div className="flex-1 flex items-center gap-2">
-            <Icon
-              size={16}
-              className="text-[var(--color-primary)] flex-shrink-0"
-              style={{ opacity: 0.7 }}
-            />
+          <CategoryIcon category={jadwal.category} />
             <div>
               <div className="flex items-center gap-1.5">
                 <p className="text-sm font-medium">{jadwal.title}</p>

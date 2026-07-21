@@ -20,12 +20,14 @@ export default function SwipeToDelete({
   const [removing, setRemoving] = useState(false);
   const startX = useRef<number | null>(null);
   const dragging = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fullSwipeThreshold = 140;
 
   const handleStart = (clientX: number) => {
     startX.current = clientX;
     dragging.current = true;
+    setIsDragging(true);
   };
 
   const handleMove = (clientX: number) => {
@@ -38,6 +40,7 @@ export default function SwipeToDelete({
 
   const handleEnd = () => {
     dragging.current = false;
+    setIsDragging(false);
 
     if (onSwipeDelete && Math.abs(translateX) > fullSwipeThreshold) {
       setRemoving(true);
@@ -69,7 +72,7 @@ export default function SwipeToDelete({
         style={{
           transform: `translateX(${translateX}px)`,
           opacity: removing ? 0 : 1,
-          transitionDuration: dragging.current ? "0ms" : "200ms",
+          transitionDuration: isDragging ? "0ms" : "200ms",
         }}
         onTouchStart={(e) => handleStart(e.touches[0].clientX)}
         onTouchMove={(e) => handleMove(e.touches[0].clientX)}
